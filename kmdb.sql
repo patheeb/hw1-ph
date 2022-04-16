@@ -98,16 +98,202 @@
 -- Turns column mode on but headers off
 .mode column
 .headers off
+.width 30 30 30
 
 -- Drop existing tables, so you'll start fresh each time this script is run.
 -- TODO!
 
+DROP TABLE IF EXISTS studio_list;
+DROP TABLE IF EXISTS thespian_list;
+DROP TABLE IF EXISTS movie_list;
+DROP TABLE IF EXISTS thespian_movie_joined;
+
 -- Create new tables, according to your domain model
 -- TODO!
+
+CREATE TABLE studio_list (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    studio_name TEXT
+);
+
+CREATE TABLE thespian_list (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    thespian_name TEXT,
+    character_name TEXT
+);
+
+CREATE TABLE movie_list (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    movie_title TEXT,
+    year TEXT,
+    mpaa_rating TEXT,
+    studio_id INTEGER
+);
+
+CREATE TABLE thespian_movie_joined (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    thespian_id INTEGER,
+    movie_id INTEGER
+);
+
 
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
 -- TODO!
+
+-- Inserting data for studio_list table
+
+INSERT INTO studio_list (
+    studio_name) 
+    VALUES ("Warner Bros."
+
+);
+
+--Inserting data for thespian_list table...is there a more efficient way to enter bulk data than running the "insert into" command multiple times?
+
+INSERT INTO thespian_list (
+    thespian_name,
+    character_name) 
+    VALUES ("Christian Bale", 
+    "Bruce Wayne"
+
+);
+INSERT INTO thespian_list (
+    thespian_name,
+    character_name) 
+    VALUES ("Michael Caine", 
+    "Alfred"
+
+);
+INSERT INTO thespian_list (
+    thespian_name,
+    character_name) 
+    VALUES ("Liam Neeson",
+    "Ra's Al Ghul"
+
+);
+
+INSERT INTO thespian_list (
+    thespian_name,
+    character_name) 
+    VALUES ("Katie Holmes",
+    "Rachel Dawes"
+
+);
+
+INSERT INTO thespian_list (
+    thespian_name,
+    character_name) 
+    VALUES ("Gary Oldman", 
+    "Commissioner Gordon"
+
+);
+
+INSERT INTO thespian_list (
+    thespian_name,
+    character_name) 
+    VALUES ("Heath Ledger", 
+    "Joker"
+
+);
+
+INSERT INTO thespian_list (
+    thespian_name,
+    character_name) 
+    VALUES ("Aaron Eckert", 
+    "Harvey Dent"
+
+);
+
+INSERT INTO thespian_list (
+    thespian_name,
+    character_name) 
+    VALUES ("Maggie Gyllenhaal", 
+    "Rachel Dawes"
+
+);
+
+INSERT INTO thespian_list (
+    thespian_name,
+    character_name) 
+    VALUES ("Tom Hardy", 
+    "Bane"
+
+);
+
+INSERT INTO thespian_list (
+    thespian_name,
+    character_name) 
+    VALUES ("Joseph Gordon-Levitt", 
+    "John Blake"
+
+);
+
+INSERT INTO thespian_list (
+    thespian_name,
+    character_name) 
+    VALUES ("Anne Hathaway", 
+    "Selina Kyle"
+
+);
+
+
+-- Inserting data for movie_list table
+
+INSERT INTO movie_list (
+    movie_title,
+    year,
+    mpaa_rating,
+    studio_id
+    ) 
+    VALUES ("Batman Begins",
+    "2005",
+    "PG-13",
+    1
+
+);
+
+INSERT INTO movie_list (
+    movie_title,
+    year,
+    mpaa_rating,
+    studio_id
+    ) 
+    VALUES ("The Dark Knight",
+    "2008",
+    "PG-13",
+    1
+);
+
+INSERT INTO movie_list (
+    movie_title,
+    year,
+    mpaa_rating,
+    studio_id
+    ) 
+    VALUES ("The Dark Knight Rises",
+    "2012",
+    "PG-13",
+    1
+);
+
+INSERT INTO thespian_movie_joined (thespian_id,movie_id)
+VALUES (1,1),
+(1,2),
+(1,3),
+(2,1),
+(2,2),
+(3,1),
+(4,1),
+(5,1),
+(5,3),
+(6,2),
+(7,2),
+(8,2),
+(9,3),
+(10,3),
+(11,3);
+
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -117,6 +303,11 @@
 -- The SQL statement for the movies output
 -- TODO!
 
+SELECT movie_list.movie_title, movie_list.year, movie_list.mpaa_rating, studio_list.studio_name 
+From movie_list
+INNER JOIN studio_list ON movie_list.studio_id = studio_list.id;
+
+
 -- Prints a header for the cast output
 .print ""
 .print "Top Cast"
@@ -125,4 +316,24 @@
 
 
 -- The SQL statement for the cast output
--- TODO!
+--
+
+
+SELECT movie_list.movie_title, thespian_list.thespian_name, thespian_list.character_name
+FROM movie_list
+INNER JOIN thespian_movie_joined ON movie_list.id = thespian_movie_joined.movie_id
+INNER JOIN thespian_list ON thespian_movie_joined.thespian_id = thespian_list.id
+ORDER BY movie_list.movie_title;
+
+
+
+
+
+
+
+
+
+
+
+
+
